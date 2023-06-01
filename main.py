@@ -24,6 +24,7 @@ def urlCheck(address):
     urlTest = inputUrl.split(".")
     x = re.search("http://...\.*.*", inputUrl)
     y = re.search("https://...\.*.*", inputUrl)
+    z = re.search("https://...\.*.*/*", inputUrl)
     if ((urlTest[0] in prefix and len(urlTest) >= 3) or x or y) and urlTest[-1] in postfix:
         print(inputUrl)
         result = webCheck(inputUrl)
@@ -34,21 +35,33 @@ def urlCheck(address):
 def evaluation(code):
     match code:
         case 200:
-            print("The server is online!")
+            print("The website is online!")
+        case 404:
+            print("Website was not found")
         case _:
             print("Unknown response")
 
 def main():
     global url
+
     window = tk.Tk()
     window.title('Website Checker')
-    window.geometry('200x300')
+    screen_width = window.winfo_screenwidth()
+    screen_length = window.winfo_screenheight()
+    centerX = int(screen_width/2 - 200)
+    centerY = int(screen_length/2 - 150)
+    window.geometry(f'400x300+{centerX}+{centerY}')
+    window.resizable(False, False)
+    window['background'] = '#9a9aa7'
+
     url_var = tk.StringVar()
     frame = tk.Frame(window, padx=10, pady=10)
     frame.pack(pady=20)
-    tk.Label(frame, text="test").grid(row=0, column=0)
-    en_url = tk.Entry(frame, textvariable=url_var).grid(row=1, column=0)
-    but_submit = tk.Button(frame, text="submit", width=20, command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    frame['background'] = '#9a9aa7'
+
+    tk.Label(frame, text="Enter the website you want to check:").grid(row=0, column=0)
+    en_url = tk.Entry(frame, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
+    but_submit = tk.Button(frame, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
     window.mainloop()
 
 
