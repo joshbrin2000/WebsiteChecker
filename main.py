@@ -32,9 +32,11 @@ def urlCheck(address):
     else:
         print("not valid")
 
+
 def evaluation(code):
     match code:
         case 200:
+            result_var.set("The website is online!")
             print("The website is online!")
         case 404:
             print("Website was not found")
@@ -42,7 +44,7 @@ def evaluation(code):
             print("Unknown response")
 
 def main():
-    global url
+    global url, result_var
 
     window = tk.Tk()
     window.title('Website Checker')
@@ -59,12 +61,15 @@ def main():
     frame.pack(pady=20)
     frame['background'] = '#9a9aa7'
 
-    tk.Label(frame, text="Enter the website you want to check:").grid(row=0, column=0)
+    tk.Label(frame, bg='#9a9aa7', text="Enter the website you want to check:").grid(row=0, column=0)
     en_url = tk.Entry(frame, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
     but_submit = tk.Button(frame, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+
+    result_var = tk.StringVar()
+    result_var.set("")
+    tk.Label(frame, bg='#9a9aa7', textvariable=result_var).grid(row=3, column=0)
     window.mainloop()
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
