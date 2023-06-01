@@ -1,13 +1,15 @@
 import urllib.request
 import urllib.error
 import re
+import tkinter as tk
+
+global url
 
 prefix = {"https://www", "http://www"}
 postfix = {"com", "net", "ca"}
 
 
 def webCheck(address):
-    print(address)
     try:
         result = urllib.request.urlopen(address).status
     except ValueError as e:
@@ -18,28 +20,36 @@ def webCheck(address):
 
 
 def urlCheck(address):
-    urlTest = address.split(".")
-    # print(f"{urlTest[0]} and {urlTest[-1]}")
-    x = re.search("http://...\.*.*", url)
-    y = re.search("https://...\.*.*", url)
+    inputUrl = address.get()
+    urlTest = inputUrl.split(".")
+    x = re.search("http://...\.*.*", inputUrl)
+    y = re.search("https://...\.*.*", inputUrl)
     if ((urlTest[0] in prefix and len(urlTest) >= 3) or x or y) and urlTest[-1] in postfix:
-        return False
+        print(inputUrl)
+        result = webCheck(inputUrl)
+        evaluation(result)
     else:
-        return True
+        print("not valid")
 
-
-def main():
-    global url
-    loop = True
-    while loop:
-        url = input("Enter website: ")
-        loop = urlCheck(url)
-    result = webCheck(url)
-    match result:
+def evaluation(code):
+    match code:
         case 200:
             print("The server is online!")
         case _:
             print("Unknown response")
+
+def main():
+    global url
+    window = tk.Tk()
+    window.title('Website Checker')
+    window.geometry('200x300')
+    url_var = tk.StringVar()
+    frame = tk.Frame(window, padx=10, pady=10)
+    frame.pack(pady=20)
+    tk.Label(frame, text="test").grid(row=0, column=0)
+    en_url = tk.Entry(frame, textvariable=url_var).grid(row=1, column=0)
+    but_submit = tk.Button(frame, text="submit", width=20, command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    window.mainloop()
 
 
 # Press the green button in the gutter to run the script.
