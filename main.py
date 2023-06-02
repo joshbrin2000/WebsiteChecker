@@ -2,7 +2,6 @@ import urllib.request
 import urllib.error
 import re
 import tkinter as tk
-import PIL
 from PIL import Image, ImageTk
 
 global url
@@ -32,18 +31,21 @@ def urlCheck(address):
         result = webCheck(inputUrl)
         evaluation(result)
     else:
-        print("not valid")
+        result_var.set("Entry is not valid")
+        # print("not valid")
 
 
 def evaluation(code):
     match code:
         case 200:
             result_var.set("The website is online!")
-            print("The website is online!")
+            # print("The website is online!")
         case 404:
-            print("Website was not found")
+            result_var.set("Website was not found")
+            # print("Website was not found")
         case _:
-            print("Unknown response")
+            result_var.set("Unknown response")
+            # print("Unknown response")
 
 def main():
     global url, result_var
@@ -69,8 +71,8 @@ def main():
     frame['background'] = '#9a9aa7'
 
     tk.Label(frame, bg='#9a9aa7', text="Enter the website you want to check:").grid(row=0, column=0)
-    en_url = tk.Entry(frame, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
-    but_submit = tk.Button(frame, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    tk.Entry(frame, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
+    tk.Button(frame, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
 
     result_var = tk.StringVar()
     result_var.set("")

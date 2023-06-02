@@ -1,1 +1,1 @@
-python3 -m pip install --upgrade Pillow
+Pillow~=9.5.0
