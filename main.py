@@ -2,6 +2,8 @@ import urllib.request
 import urllib.error
 import re
 import tkinter as tk
+import PIL
+from PIL import Image, ImageTk
 
 global url
 
@@ -48,6 +50,11 @@ def main():
 
     window = tk.Tk()
     window.title('Website Checker')
+
+    ico = Image.open('website-icon.png')
+    photo = ImageTk.PhotoImage(ico)
+    window.wm_iconphoto(False, photo)
+
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
     centerX = int(screen_width/2 - 200)
