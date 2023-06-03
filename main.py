@@ -27,7 +27,7 @@ def urlCheck(address):
     y = re.search("https://...\.*.*", inputUrl)
     z = re.search("https://...\.*.*/*", inputUrl)
     if ((urlTest[0] in prefix and len(urlTest) >= 3) or x or y) and urlTest[-1] in postfix:
-        print(inputUrl)
+        # print(inputUrl)
         result = webCheck(inputUrl)
         evaluation(result)
     else:
@@ -46,6 +46,7 @@ def evaluation(code):
         case _:
             result_var.set("Unknown response")
             # print("Unknown response")
+
 
 def main():
     global url, result_var
@@ -77,6 +78,8 @@ def main():
     result_var = tk.StringVar()
     result_var.set("")
     tk.Label(frame, bg='#9a9aa7', textvariable=result_var).grid(row=3, column=0)
+
+    window.bind('<Return>', lambda event: urlCheck(url_var))
     window.mainloop()
 
 
