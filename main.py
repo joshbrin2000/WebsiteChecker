@@ -60,9 +60,9 @@ def main():
 
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
-    centerX = int(screen_width/2 - 200)
-    centerY = int(screen_length/2 - 150)
-    window.geometry(f'400x300+{centerX}+{centerY}')
+    centerX = int(screen_width/2 - 450)
+    centerY = int(screen_length/2 - 250)
+    window.geometry(f'900x500+{centerX}+{centerY}')
     window.resizable(False, False)
     window['background'] = '#9a9aa7'
 
