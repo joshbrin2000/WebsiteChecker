@@ -4,7 +4,7 @@ import re
 import tkinter as tk
 from PIL import Image, ImageTk
 
-global url
+global url, result_var, imagePanel, checkmark, xmark
 
 prefix = {"https://www", "http://www"}
 postfix = {"com", "net", "ca"}
@@ -21,6 +21,7 @@ def webCheck(address):
 
 
 def urlCheck(address):
+    global xmark, imagePanel
     inputUrl = address.get()
     urlTest = inputUrl.split(".")
     x = re.search("http://...\.*.*", inputUrl)
@@ -32,24 +33,33 @@ def urlCheck(address):
         evaluation(result)
     else:
         result_var.set("Entry is not valid")
+        imagePanel.configure(image=xmark)
+        imagePanel.image = xmark
         # print("not valid")
 
 
 def evaluation(code):
+    global checkmark, xmark, imagePanel
     match code:
         case 200:
             result_var.set("The website is online!")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
             # print("The website is online!")
         case 404:
             result_var.set("Website was not found")
+            imagePanel.configure(image=xmark)
+            imagePanel.image = xmark
             # print("Website was not found")
         case _:
             result_var.set("Unknown response")
+            imagePanel.configure(image=xmark)
+            imagePanel.image = xmark
             # print("Unknown response")
 
 
 def main():
-    global url, result_var
+    global url, result_var, imagePanel, checkmark, xmark
 
     window = tk.Tk()
     window.title('Website Checker')
@@ -57,6 +67,9 @@ def main():
     ico = Image.open('website-icon.png')
     photo = ImageTk.PhotoImage(ico)
     window.wm_iconphoto(False, photo)
+
+    checkmark = ImageTk.PhotoImage(Image.open('checkmark.png'))
+    xmark = ImageTk.PhotoImage(Image.open('x-mark.png'))
 
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
@@ -77,7 +90,9 @@ def main():
 
     result_var = tk.StringVar()
     result_var.set("")
-    tk.Label(frame, bg='#9a9aa7', textvariable=result_var).grid(row=3, column=0)
+    tk.Label(frame, bg='#9a9aa7', textvariable=result_var).grid(row=3, column=0, pady=50)
+    imagePanel = tk.Label(frame, bg='#9a9aa7')
+    imagePanel.grid(row=3, column=1, pady=50)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
     window.mainloop()
