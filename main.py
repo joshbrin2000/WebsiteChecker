@@ -64,12 +64,16 @@ def main():
     window = tk.Tk()
     window.title('Website Checker')
 
-    ico = Image.open('website-icon.png')
+    url_var = tk.StringVar()
+    result_var = tk.StringVar()
+    result_var.set("")
+
+    ico = Image.open('resources/img/website-icon.png')
     photo = ImageTk.PhotoImage(ico)
     window.wm_iconphoto(False, photo)
 
-    checkmark = ImageTk.PhotoImage(Image.open('checkmark.png'))
-    xmark = ImageTk.PhotoImage(Image.open('x-mark.png'))
+    checkmark = ImageTk.PhotoImage(Image.open('resources/img/checkmark.png'))
+    xmark = ImageTk.PhotoImage(Image.open('resources/img/x-mark.png'))
 
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
@@ -79,20 +83,23 @@ def main():
     window.resizable(False, False)
     window['background'] = '#9a9aa7'
 
-    url_var = tk.StringVar()
-    frame = tk.Frame(window, padx=10, pady=10)
-    frame.pack(pady=20)
-    frame['background'] = '#9a9aa7'
+    frameMain = tk.Frame(window, padx=10, pady=10)
+    frameMain.pack()
+    frameMain['background'] = '#9a9aa7'
 
-    tk.Label(frame, bg='#9a9aa7', text="Enter the website you want to check:").grid(row=0, column=0)
-    tk.Entry(frame, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
-    tk.Button(frame, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:").grid(row=0, column=0)
+    tk.Entry(frameMain, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
+    tk.Button(frameMain, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
 
-    result_var = tk.StringVar()
-    result_var.set("")
-    tk.Label(frame, bg='#9a9aa7', textvariable=result_var).grid(row=3, column=0, pady=50)
-    imagePanel = tk.Label(frame, bg='#9a9aa7')
-    imagePanel.grid(row=3, column=1, pady=50)
+
+
+    frame1 = tk.Frame(window, padx=10, pady=10)
+    frame1.pack(padx=10)
+    frame1['background'] = '#9a9aa7'
+
+    tk.Label(frame1, bg='#9a9aa7', textvariable=result_var).grid(row=0, column=0, padx=30)
+    imagePanel = tk.Label(frame1, bg='#9a9aa7')
+    imagePanel.grid(row=0, column=1)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
     window.mainloop()
