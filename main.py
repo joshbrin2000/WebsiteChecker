@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 global url, result_var, imagePanel, checkmark, xmark
 
 prefix = {"https://www", "http://www"}
-postfix = {"com", "net", "ca"}
+postfix = {"com", "net", "ca", "edu"}
 
 
 def webCheck(address):
@@ -111,9 +111,9 @@ def main():
     frameMain.pack()
     frameMain['background'] = '#9a9aa7'
 
-    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:").grid(row=0, column=0)
-    tk.Entry(frameMain, textvariable=url_var).grid(row=1, column=0, padx=10, pady=10)
-    tk.Button(frameMain, width=15, text="Submit", command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20)).grid(row=0, column=0, pady=(25, 10))
+    tk.Entry(frameMain, width=25, textvariable=url_var).grid(row=1, column=0, padx=10, pady=(0, 5))
+    tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10), command=lambda: urlCheck(url_var)).grid(row=2, column=0)
 
 
 
