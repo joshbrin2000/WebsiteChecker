@@ -26,7 +26,6 @@ def urlCheck(address):
     urlTest = inputUrl.split(".")
     x = re.search("http://...\.*.*", inputUrl)
     y = re.search("https://...\.*.*", inputUrl)
-    z = re.search("https://...\.*.*/*", inputUrl)
     if ((urlTest[0] in prefix and len(urlTest) >= 3) or x or y) and urlTest[-1] in postfix:
         # print(inputUrl)
         result = webCheck(inputUrl)
@@ -46,6 +45,31 @@ def evaluation(code):
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
             # print("The website is online!")
+        case 203:
+            result_var.set("The website is online! NAI - content accessed from third-party")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
+            # print("The website is online! NAI - content accessed from third-party")
+        case 300:
+            result_var.set("URL too unspecific")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
+            # print("URL too unspecific")
+        case 400:
+            result_var.set("Bad request - URL may have poor syntax")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
+            # print("Bad request - URL may have poor syntax")
+        case 401:
+            result_var.set("Unauthorized Access")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
+            # print("Unauthorized Access")
+        case 403:
+            result_var.set("Forbidden - No Access Allowed")
+            imagePanel.configure(image=checkmark)
+            imagePanel.image = checkmark
+            # print("Forbidden - No Access Allowed")
         case 404:
             result_var.set("Website was not found")
             imagePanel.configure(image=xmark)
