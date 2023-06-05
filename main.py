@@ -1,12 +1,11 @@
 import urllib.request
 import urllib.error
-import re
 import tkinter as tk
 from PIL import Image, ImageTk
 
 global url, result_var, imagePanel, checkmark, xmark
 
-prefix = {"https://www", "http://www"}
+prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
 
 
@@ -30,7 +29,7 @@ def urlCheck(address):
 
     if urlTest[0] in prefix and len(urlTest) >= 3 and endCheck[0] in postfix:
         result = webCheck(inputUrl)
-        evaluation(result)
+        evaluation(result, inputUrl)
     else:
         result_var.set("Entry is not valid")
         imagePanel.configure(image=xmark)
@@ -38,7 +37,7 @@ def urlCheck(address):
         # print("not valid")
 
 
-def evaluation(code):
+def evaluation(code, inputUrl):
     global checkmark, xmark, imagePanel
     match code:
         case 200:
@@ -81,6 +80,12 @@ def evaluation(code):
             imagePanel.configure(image=xmark)
             imagePanel.image = xmark
             # print("Unknown response")
+    fileWriting(inputUrl)
+
+
+def fileWriting(urlString):
+    with open("output.txt", 'a') as file:
+        file.writelines(f'{urlString}:      {result_var.get()}\n')
 
 
 def main():
@@ -102,8 +107,8 @@ def main():
 
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
-    centerX = int(screen_width/2 - 300)
-    centerY = int(screen_length/2 - 250)
+    centerX = int(screen_width / 2 - 300)
+    centerY = int(screen_length / 2 - 250)
     window.geometry(f'600x500+{centerX}+{centerY}')
     window.resizable(False, False)
     window['background'] = '#9a9aa7'
@@ -115,8 +120,8 @@ def main():
     tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20))\
         .grid(row=0, column=0, pady=(25, 10))
     tk.Entry(frameMain, width=25, textvariable=url_var).grid(row=1, column=0, padx=10, pady=(0, 5))
-    tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10), command=lambda:
-        urlCheck(url_var)).grid(row=2, column=0)
+    tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10),
+              command=lambda: urlCheck(url_var)).grid(row=2, column=0)
 
     frame1 = tk.Frame(window, padx=10, pady=10)
     frame1.pack(padx=10)
