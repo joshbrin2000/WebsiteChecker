@@ -3,7 +3,7 @@ import urllib.error
 import tkinter as tk
 from PIL import Image, ImageTk
 
-global url, result_var, imagePanel, checkmark, xmark
+global url, result_var, imagePanel, checkmark, xmark, history_var
 
 prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
@@ -35,6 +35,10 @@ def urlCheck(address):
         imagePanel.configure(image=xmark)
         imagePanel.image = xmark
         # print("not valid")
+    num_lines = sum(1 for _ in open('output.txt'))
+    if num_lines > 5:
+        num_lines = 5
+    lastNLines('output.txt', num_lines)
 
 
 def evaluation(code, inputUrl):
@@ -88,15 +92,24 @@ def fileWriting(urlString):
         file.writelines(f'{urlString}:      {result_var.get()}\n')
 
 
+def lastNLines(fileName, n):
+    global history_var
+    history_var.set("")
+    with open(fileName, 'r') as f:
+        for i in (f.readlines()[-n:]):
+            # print(i, end="")
+            history_var.set(history_var.get() + i + '\n')
+
+
 def main():
-    global url, result_var, imagePanel, checkmark, xmark
+    global url, result_var, imagePanel, checkmark, xmark, history_var
 
     window = tk.Tk()
     window.title('Website Checker')
 
     url_var = tk.StringVar()
     result_var = tk.StringVar()
-    result_var.set("")
+    history_var = tk.StringVar()
 
     ico = Image.open('resources/img/website-icon.png')
     photo = ImageTk.PhotoImage(ico)
@@ -130,6 +143,12 @@ def main():
     tk.Label(frame1, bg='#9a9aa7', textvariable=result_var).grid(row=0, column=0, padx=30)
     imagePanel = tk.Label(frame1, bg='#9a9aa7')
     imagePanel.grid(row=0, column=1)
+
+    frame2 = tk.Frame(window, padx=10, pady=10)
+    frame2.pack(padx=10)
+    frame2['background'] = '#9a9aa7'
+
+    tk.Label(frame2, bg='#9a9aa7', textvariable=history_var).grid(row=0, column=0, padx=30)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
     window.mainloop()
