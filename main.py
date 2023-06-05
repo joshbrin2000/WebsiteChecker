@@ -121,8 +121,8 @@ def main():
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
     centerX = int(screen_width / 2 - 300)
-    centerY = int(screen_length / 2 - 250)
-    window.geometry(f'600x500+{centerX}+{centerY}')
+    centerY = int(screen_length / 2 - 300)
+    window.geometry(f'600x600+{centerX}+{centerY}')
     window.resizable(False, False)
     window['background'] = '#9a9aa7'
 
@@ -148,7 +148,8 @@ def main():
     frame2.pack(padx=10)
     frame2['background'] = '#9a9aa7'
 
-    tk.Label(frame2, bg='#9a9aa7', textvariable=history_var).grid(row=0, column=0, padx=30)
+    tk.Label(frame2, bg='#9a9aa7', text="History", font=('Times New Roman', 20)).grid(row=0, column=0)
+    tk.Label(frame2, bg='#9a9aa7', textvariable=history_var).grid(row=1, column=0)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
     window.mainloop()
