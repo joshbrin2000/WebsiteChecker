@@ -24,9 +24,11 @@ def urlCheck(address):
     global xmark, imagePanel
     inputUrl = address.get()
     urlTest = inputUrl.split(".")
-    x = re.search("http://...\.*.*", inputUrl)
-    y = re.search("https://...\.*.*", inputUrl)
-    if ((urlTest[0] in prefix and len(urlTest) >= 3) or x or y) and urlTest[-1] in postfix:
+    endCheck = urlTest[-1].split("/")
+    print(urlTest)
+    print(endCheck)
+
+    if urlTest[0] in prefix and len(urlTest) >= 3 and endCheck[0] in postfix:
         # print(inputUrl)
         result = webCheck(inputUrl)
         evaluation(result)
@@ -114,8 +116,6 @@ def main():
     tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20)).grid(row=0, column=0, pady=(25, 10))
     tk.Entry(frameMain, width=25, textvariable=url_var).grid(row=1, column=0, padx=10, pady=(0, 5))
     tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10), command=lambda: urlCheck(url_var)).grid(row=2, column=0)
-
-
 
     frame1 = tk.Frame(window, padx=10, pady=10)
     frame1.pack(padx=10)
