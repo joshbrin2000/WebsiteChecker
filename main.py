@@ -25,11 +25,10 @@ def urlCheck(address):
     inputUrl = address.get()
     urlTest = inputUrl.split(".")
     endCheck = urlTest[-1].split("/")
-    print(urlTest)
-    print(endCheck)
+    # print(urlTest)
+    # print(endCheck)
 
     if urlTest[0] in prefix and len(urlTest) >= 3 and endCheck[0] in postfix:
-        # print(inputUrl)
         result = webCheck(inputUrl)
         evaluation(result)
     else:
@@ -103,9 +102,9 @@ def main():
 
     screen_width = window.winfo_screenwidth()
     screen_length = window.winfo_screenheight()
-    centerX = int(screen_width/2 - 450)
+    centerX = int(screen_width/2 - 300)
     centerY = int(screen_length/2 - 250)
-    window.geometry(f'900x500+{centerX}+{centerY}')
+    window.geometry(f'600x500+{centerX}+{centerY}')
     window.resizable(False, False)
     window['background'] = '#9a9aa7'
 
@@ -113,9 +112,11 @@ def main():
     frameMain.pack()
     frameMain['background'] = '#9a9aa7'
 
-    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20)).grid(row=0, column=0, pady=(25, 10))
+    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20))\
+        .grid(row=0, column=0, pady=(25, 10))
     tk.Entry(frameMain, width=25, textvariable=url_var).grid(row=1, column=0, padx=10, pady=(0, 5))
-    tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10), command=lambda: urlCheck(url_var)).grid(row=2, column=0)
+    tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10), command=lambda:
+        urlCheck(url_var)).grid(row=2, column=0)
 
     frame1 = tk.Frame(window, padx=10, pady=10)
     frame1.pack(padx=10)
