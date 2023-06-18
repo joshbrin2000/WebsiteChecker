@@ -1,15 +1,37 @@
+#!/usr/bin/env python3
+
+"""Website Checker: takes user input, checks if valid url, then returns status code of 
+   website server
+"""
+
 import urllib.request
 import urllib.error
 import tkinter as tk
 from PIL import Image, ImageTk
 
-global url, result_var, imagePanel, checkmark, xmark, history_var
+result_var = None
+imagePanel = None
+checkmark = None
+xmark = None
+history_var = None
 
 prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
 
 
 def webCheck(address):
+    """_summary_
+
+    Args:
+        address (str): website address in URL format
+
+    Raises:
+        ValueError: if address does not adhere to basic URL format
+        ValueError: if website is down
+
+    Returns:
+        int: status code of website
+    """
     try:
         result = urllib.request.urlopen(address).status
     except ValueError as e:
@@ -20,12 +42,14 @@ def webCheck(address):
 
 
 def urlCheck(address):
-    global xmark, imagePanel
+    """Checks if input is in url format
+
+    Args:
+        address (str): string of web address
+    """
     inputUrl = address.get()
     urlTest = inputUrl.split(".")
     endCheck = urlTest[-1].split("/")
-    # print(urlTest)
-    # print(endCheck)
 
     if urlTest[0] in prefix and len(urlTest) >= 3 and endCheck[0] in postfix:
         result = webCheck(inputUrl)
@@ -34,75 +58,81 @@ def urlCheck(address):
         result_var.set("Entry is not valid")
         imagePanel.configure(image=xmark)
         imagePanel.image = xmark
-        # print("not valid")
-    num_lines = sum(1 for _ in open('output.txt'))
-    if num_lines > 5:
-        num_lines = 5
+    num_lines = min(sum(1 for _ in open('output.txt', 'r')), 5)
     lastNLines('output.txt', num_lines)
 
 
 def evaluation(code, inputUrl):
-    global checkmark, xmark, imagePanel
+    """checks status code and displays relavant message and checkmark/
+       xmark
+
+    Args:
+        code (int): server status code
+        inputUrl (str): url string submitted by user
+    """
     match code:
         case 200:
             result_var.set("The website is online!")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("The website is online!")
         case 203:
             result_var.set("The website is online! NAI - content accessed from third-party")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("The website is online! NAI - content accessed from third-party")
         case 300:
             result_var.set("URL too unspecific")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("URL too unspecific")
         case 400:
             result_var.set("Bad request - URL may have poor syntax")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("Bad request - URL may have poor syntax")
         case 401:
             result_var.set("Unauthorized Access")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("Unauthorized Access")
         case 403:
             result_var.set("Forbidden - No Access Allowed")
             imagePanel.configure(image=checkmark)
             imagePanel.image = checkmark
-            # print("Forbidden - No Access Allowed")
         case 404:
             result_var.set("Website was not found")
             imagePanel.configure(image=xmark)
             imagePanel.image = xmark
-            # print("Website was not found")
         case _:
             result_var.set("Unknown response")
             imagePanel.configure(image=xmark)
             imagePanel.image = xmark
-            # print("Unknown response")
     fileWriting(inputUrl)
 
 
 def fileWriting(urlString):
+    """writes url string to .txt file for history
+
+    Args:
+        urlString (str): url address
+    """
     with open("output.txt", 'a') as file:
         file.writelines(f'{urlString}:      {result_var.get()}\n')
 
 
 def lastNLines(fileName, n):
-    global history_var
+    """sets history variable to up to last n entries in file
+
+    Args:
+        fileName (str): string of file name
+        n (int): number of lines to display
+    """
     history_var.set("")
     with open(fileName, 'r') as f:
         for i in (f.readlines()[-n:]):
-            # print(i, end="")
             history_var.set(history_var.get() + i + '\n')
 
 
 def main():
-    global url, result_var, imagePanel, checkmark, xmark, history_var
+    """sets up TKinter layout
+    """
+    global result_var, imagePanel, checkmark, xmark, history_var
 
     window = tk.Tk()
     window.title('Website Checker')
@@ -130,8 +160,8 @@ def main():
     frameMain.pack()
     frameMain['background'] = '#9a9aa7'
 
-    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:", font=('Times New Roman', 20))\
-        .grid(row=0, column=0, pady=(25, 10))
+    tk.Label(frameMain, bg='#9a9aa7', text="Enter the website you want to check:",
+             font=('Times New Roman', 20)).grid(row=0, column=0, pady=(25, 10))
     tk.Entry(frameMain, width=25, textvariable=url_var).grid(row=1, column=0, padx=10, pady=(0, 5))
     tk.Button(frameMain, width=15, height=2, text="Submit", font=('Times New Roman', 10),
               command=lambda: urlCheck(url_var)).grid(row=2, column=0)
@@ -148,7 +178,8 @@ def main():
     frame2.pack(padx=10)
     frame2['background'] = '#9a9aa7'
 
-    tk.Label(frame2, bg='#9a9aa7', text="History", font=('Times New Roman', 20)).grid(row=0, column=0)
+    tk.Label(frame2, bg='#9a9aa7', text="History", font=('Times New Roman', 20))\
+        .grid(row=0, column=0)
     tk.Label(frame2, bg='#9a9aa7', textvariable=history_var).grid(row=1, column=0)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
