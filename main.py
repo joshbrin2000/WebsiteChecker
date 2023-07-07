@@ -18,7 +18,6 @@ history_var = None
 prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
 
-
 def webCheck(address):
     """_summary_
 
