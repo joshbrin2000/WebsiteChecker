@@ -8,6 +8,13 @@ import urllib.request
 import urllib.error
 import tkinter as tk
 from PIL import Image, ImageTk
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="password"
+)
 
 result_var = None
 imagePanel = None
@@ -17,6 +24,17 @@ history_var = None
 
 prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
+
+def databaseInit():
+    mydb.cursor().execute("CREATE DATABASE IF NOT EXISTS urlDatabase")
+    mydb.database = "urlDatabase"
+
+def tableInit():
+    mydb.cursor().execute("CREATE TABLE urlEntries (id INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(255), result_resp VARCHAR(255), time_created DATETIME)")
+
+databaseInit()
+tableInit()
+print(mydb)
 
 def webCheck(address):
     """_summary_
