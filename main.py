@@ -8,14 +8,7 @@ import urllib.request
 import urllib.error
 import tkinter as tk
 from PIL import Image, ImageTk
-import mysql.connector
-from datetime import datetime
-
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="password"
-)
+import sql_features
 
 result_var = None
 imagePanel = None
@@ -25,31 +18,6 @@ history_var = None
 
 prefix = {"https://www", "http://www", "https://", "http://"}
 postfix = {"com", "net", "ca", "edu"}
-
-mycursor = mydb.cursor()
-
-def databaseInit():
-    mycursor.execute("CREATE DATABASE IF NOT EXISTS urlDatabase")
-    mydb.database = "urlDatabase"
-
-def tableInit():
-    mycursor.execute("CREATE TABLE IF NOT EXISTS urlEntries (id INT AUTO_INCREMENT PRIMARY KEY, url VARCHAR(255), result_resp VARCHAR(255), time_created DATETIME)")
-
-def insertTable(u, rr, tc):
-    mycursor.execute("INSERT INTO urlEntries (url, result_resp, time_created) VALUES (%s, %s, %s)", (u, rr, tc))
-    mydb.commit()
-    
-def clearTable():
-    mycursor.execute("TRUNCATE TABLE urlEntries")
-    mycursor.execute("ALTER TABLE urlEntries AUTO_INCREMENT=1")
-
-databaseInit()
-tableInit()
-
-now = datetime.now()
-date_time = now.strftime('%Y-%m-%d %H:%M:%S')
-#.strftime('%Y-%m-%d %H:%M:%S')
-#insertTable("test.com", "test", date_time)
 
 def webCheck(address):
     """_summary_
@@ -166,6 +134,9 @@ def main():
     """
     global result_var, imagePanel, checkmark, xmark, history_var
 
+    sql_features.databaseInit()
+    sql_features.tableInit()
+    
     window = tk.Tk()
     window.title('Website Checker')
 
