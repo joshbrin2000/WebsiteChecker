@@ -9,6 +9,7 @@ import urllib.error
 import tkinter as tk
 from PIL import Image, ImageTk
 import sql_features
+from datetime import datetime
 
 result_var = None
 imagePanel = None
@@ -59,7 +60,7 @@ def urlCheck(address):
         imagePanel.configure(image=xmark)
         imagePanel.image = xmark
     num_lines = min(sum(1 for _ in open('output.txt', 'r')), 5)
-    lastNLines('output.txt', num_lines)
+    sqlReading()
 
 
 def evaluation(code, inputUrl):
@@ -103,8 +104,16 @@ def evaluation(code, inputUrl):
             result_var.set("Unknown response")
             imagePanel.configure(image=xmark)
             imagePanel.image = xmark
-    fileWriting(inputUrl)
+    sqlWriting(inputUrl)
 
+def sqlWriting(urlString):
+    sql_features.insertTable(urlString, result_var.get())
+
+def sqlReading():
+    history_var.set('')
+    result = sql_features.selectNTable(5)
+    for i in result:
+        history_var.set(history_var.get() + f'{i[1]}    {i[2]}    {i[3].strftime("%Y-%m-%d %H:%M:%S")}\n')
 
 def fileWriting(urlString):
     """writes url string to .txt file for history
@@ -143,6 +152,8 @@ def main():
     url_var = tk.StringVar()
     result_var = tk.StringVar()
     history_var = tk.StringVar()
+    
+    sqlReading()
 
     ico = Image.open('resources/img/website-icon.png')
     photo = ImageTk.PhotoImage(ico)
