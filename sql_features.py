@@ -26,7 +26,7 @@ def tableInit():
 
 def insertTable(u, rr):
     global mydb, mycursor
-    if (mycursor and mydb):
+    if (mycursor and mydb.is_connected()):
         now = datetime.now()
         date_time = now.strftime('%Y-%m-%d %H:%M:%S')
         #insertTable("test.com", "test", date_time)
@@ -50,5 +50,5 @@ def closeSQL():
     global mydb, mycursor
     if (mycursor):
         mycursor.close()
-    if (mydb):
+    if (mydb.is_connected()):
         mydb.close()

@@ -59,7 +59,7 @@ def urlCheck(address):
         result_var.set("Entry is not valid")
         imagePanel.configure(image=xmark)
         imagePanel.image = xmark
-    num_lines = min(sum(1 for _ in open('output.txt', 'r')), 5)
+    # num_lines = min(sum(1 for _ in open('output.txt', 'r')), 5)
     sqlReading()
 
 
