@@ -108,10 +108,19 @@ def evaluation(code, inputUrl):
 
 
 def sqlWriting(urlString):
+    """writes url string, result_var message, and datetime to sql database for history;
+       datetime is sql-side
+
+    Args:
+        urlString (str): url address
+    """
     sql_features.insertTable(urlString, result_var.get())
 
 
 def sqlReading():
+    """reads up to 5 most recent sql rows, and prints them out
+    
+    """
     history_var.set('')
     result = sql_features.selectNTable(5)
     for i in result:
