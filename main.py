@@ -106,14 +106,17 @@ def evaluation(code, inputUrl):
             imagePanel.image = xmark
     sqlWriting(inputUrl)
 
+
 def sqlWriting(urlString):
     sql_features.insertTable(urlString, result_var.get())
+
 
 def sqlReading():
     history_var.set('')
     result = sql_features.selectNTable(5)
     for i in result:
         history_var.set(history_var.get() + f'{i[1]}    {i[2]}    {i[3].strftime("%Y-%m-%d %H:%M:%S")}\n')
+
 
 def fileWriting(urlString):
     """writes url string to .txt file for history
@@ -132,10 +135,15 @@ def lastNLines(fileName, n):
         fileName (str): string of file name
         n (int): number of lines to display
     """
-    history_var.set("")
+    history_var.set('')
     with open(fileName, 'r') as f:
         for i in (f.readlines()[-n:]):
             history_var.set(history_var.get() + i + '\n')
+
+
+def finishUp(root):
+    sql_features.closeSQL()
+    root.destroy()
 
 
 def main():
@@ -197,6 +205,8 @@ def main():
     tk.Label(frame2, bg='#9a9aa7', textvariable=history_var).grid(row=1, column=0)
 
     window.bind('<Return>', lambda event: urlCheck(url_var))
+    
+    window.protocol("WM_DELETE_WINDOW", lambda arg=window: finishUp(arg))
     window.mainloop()
 
 
